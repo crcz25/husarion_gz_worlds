@@ -16,21 +16,32 @@
 
 import os
 
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import EnvironmentVariable, LaunchConfiguration, PathJoinSubstitution
-from launch_ros.substitutions import FindPackageShare
+from launch.substitutions import EnvironmentVariable, LaunchConfiguration
 
 
 def generate_launch_description():
-    pkg_share = FindPackageShare("husarion_gz_worlds")
-    gazebo_ros_share = FindPackageShare("gazebo_ros")
-    models_path = PathJoinSubstitution([pkg_share, "models"])
-    world_path = PathJoinSubstitution([pkg_share, "worlds", "husarion_office_gazebo11.world"])
+    pkg_share = get_package_share_directory("husarion_gz_worlds")
+    gazebo_ros_share = get_package_share_directory("gazebo_ros")
+    turtlebot3_gazebo_share = get_package_share_directory("turtlebot3_gazebo")
+    turtlebot3_launch_dir = os.path.join(turtlebot3_gazebo_share, "launch")
+
+    world_path = os.path.join(pkg_share, "worlds", "husarion_office_gazebo11.world")
+    husarion_models_path = os.path.join(pkg_share, "models")
+    turtlebot3_models_path = os.path.join(turtlebot3_gazebo_share, "models")
+
+    use_sim_time = LaunchConfiguration("use_sim_time")
+    x_pose = LaunchConfiguration("x_pose")
+    y_pose = LaunchConfiguration("y_pose")
+    yaw = LaunchConfiguration("yaw")
 
     gazebo_model_path = [
-        models_path,
+        husarion_models_path,
+        os.pathsep,
+        turtlebot3_models_path,
         os.pathsep,
         EnvironmentVariable("GAZEBO_MODEL_PATH", default_value=""),
     ]
@@ -52,11 +63,31 @@ def generate_launch_description():
                 default_value="false",
                 description="Set to true to increase Gazebo Classic log output.",
             ),
+            DeclareLaunchArgument(
+                "use_sim_time",
+                default_value="true",
+                description="Use simulation time.",
+            ),
+            DeclareLaunchArgument(
+                "x_pose",
+                default_value="0.6",
+                description="Initial x position of the TurtleBot3 robot.",
+            ),
+            DeclareLaunchArgument(
+                "y_pose",
+                default_value="0.0",
+                description="Initial y position of the TurtleBot3 robot.",
+            ),
+            DeclareLaunchArgument(
+                "yaw",
+                default_value="-1.57",
+                description="Initial yaw of the TurtleBot3 robot in radians.",
+            ),
             SetEnvironmentVariable("GAZEBO_MODEL_PATH", gazebo_model_path),
             SetEnvironmentVariable("GAZEBO_RESOURCE_PATH", gazebo_resource_path),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    PathJoinSubstitution([gazebo_ros_share, "launch", "gazebo.launch.py"])
+                    os.path.join(gazebo_ros_share, "launch", "gazebo.launch.py")
                 ),
                 launch_arguments={
                     "world": world_path,
@@ -64,6 +95,18 @@ def generate_launch_description():
                     "verbose": LaunchConfiguration("verbose"),
                     "server_required": "true",
                 }.items(),
+            ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(turtlebot3_launch_dir, "robot_state_publisher.launch.py")
+                ),
+                launch_arguments={"use_sim_time": use_sim_time}.items(),
+            ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(turtlebot3_launch_dir, "spawn_turtlebot3.launch.py")
+                ),
+                launch_arguments={"x_pose": x_pose, "y_pose": y_pose, "yaw": yaw}.items(),
             ),
         ]
     )

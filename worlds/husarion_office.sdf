@@ -656,7 +656,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose>9.48279 0.673557 0 1.57 -0 0</pose>
+      <pose>9.48279 1.32 0 1.57 -0 0</pose>
     </model>
     <model name='OpenRobotics/_Rosbot1'>
       <static>1</static>
@@ -7972,10 +7972,10 @@
         </link>
       </model>
       <model name='OpenRobotics/Kitchen'>
-        <pose>9.48279 1.33283 -0.000525 1.57 -0 0</pose>
+        <pose>9.48279 1.32 -0.000525 1.57 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>9.48279 1.33283 -0.000525 1.57 -0 0</pose>
+          <pose>9.48279 1.32 -0.000525 1.57 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>

@@ -576,7 +576,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose>9.48279 0.673557 0 1.57 -0 0</pose>
+      <pose>9.48279 1.32 0 1.57 -0 0</pose>
     </model>
     <model name='OpenRobotics/_Rosbot1'>
       <static>1</static>
@@ -6480,9 +6480,11 @@
               <size>1.43627 0.03 2.2</size>
             </box>
           </geometry>
+          <transparency>0</transparency>
           <material>
-            <ambient>0.5 0.25 0 0.6</ambient>
-            <diffuse>0.5 0.25 0 0.6</diffuse>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
         <collision name='right_collision'>
@@ -6493,7 +6495,7 @@
           </geometry>
           <surface>
             <contact>
-              <collide_bitmask>2</collide_bitmask>
+              <collide_bitmask>1</collide_bitmask>
               <ode/>
             </contact>
             <bounce/>
@@ -6549,9 +6551,11 @@
               <size>0.389643 0.03 2.2</size>
             </box>
           </geometry>
+          <transparency>0</transparency>
           <material>
-            <ambient>0.5 0.25 0 0.6</ambient>
-            <diffuse>0.5 0.25 0 0.6</diffuse>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
         <collision name='right_collision'>
@@ -6562,7 +6566,7 @@
           </geometry>
           <surface>
             <contact>
-              <collide_bitmask>2</collide_bitmask>
+              <collide_bitmask>1</collide_bitmask>
               <ode/>
             </contact>
             <bounce/>
